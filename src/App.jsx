@@ -14,13 +14,15 @@ function App() {
   const [multiInputs, setMultiInputs] = useState(false); // Multi Input -> Bool
   const [multipleInputs, selectMultipleInputs] = useState([]); // Multiple Inputs
 
+  const API_URL = import.meta.env.VITE_APP_API_URL;
+
   // Get Runtimes
   useEffect(() => {
     const localRuntimes = localStorage.getItem('langRuntimes');
     if (localRuntimes) {
       setRuntimes(JSON.parse(localRuntimes));
     } else {
-      fetch('https://emkc.org/api/v2/piston/runtimes')
+      fetch(API_URL + '/runtimes')
         .then(res => res.json())
         .then(data => {
           setRuntimes(data);
@@ -33,7 +35,7 @@ function App() {
     if (code) {
       // console.log(runtimes[selectedRuntime])
       setOutput('Executing code...');
-      fetch('https://emkc.org/api/v2/piston/execute', {
+      fetch(API_URL + '/execute', {
         method: 'POST',
         body: JSON.stringify({
           ...runtimes[selectedRuntime],
